@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>Nice Finds</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="Every Nice Finds gadget in one place. Tap a find to check it out.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@600&display=swap">
+<style>
+/* Layout: one column of find cards on a phone, a 2-3 column grid on wider screens; numbers lead each card */
+:root {
+  --bg: #f3f4f1; --surface: #ffffff; --ink: #15181a; --muted: #5d6468; --line: #dfe2dc;
+  --accent: #0d6e5f; --accent-ink: #ffffff; --num: #0d6e5f;
+  --display: "Bricolage Grotesque", "Helvetica Neue", Arial, sans-serif;
+  --body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
+  --bg: #101314; --surface: #181c1e; --ink: #eef1ee; --muted: #a3aaa6; --line: #2a3032;
+  --accent: #3fbfa8; --accent-ink: #08201b; --num: #5fd3bd; color-scheme: dark } }
+:root[data-theme="dark"] {
+  --bg: #101314; --surface: #181c1e; --ink: #eef1ee; --muted: #a3aaa6; --line: #2a3032;
+  --accent: #3fbfa8; --accent-ink: #08201b; --num: #5fd3bd; color-scheme: dark }
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font: 400 1rem/1.5 var(--body); margin: 0; }
+.wrap { max-width: 1080px; margin: 0 auto; padding-block: 2.5rem 3rem;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+header { display: grid; gap: .5rem; margin-bottom: 2rem; }
+h1 { font: 800 clamp(2.2rem, 7vw, 3.6rem)/1 var(--display); letter-spacing: -.02em; margin: 0; text-wrap: balance; }
+.lede { color: var(--muted); margin: 0; max-width: 34rem; }
+.count { font: 600 .78rem/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--num); }
+.grid { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; overflow: hidden;
+  display: grid; grid-template-rows: auto 1fr; min-width: 0; }
+.photo { aspect-ratio: 4 / 3; width: 100%; max-width: 100%; object-fit: cover; display: block; background: var(--line); }
+.body { display: grid; gap: .55rem; padding: 1rem 1.1rem 1.15rem; align-content: start; }
+.n { font: 600 .85rem/1 var(--mono); color: var(--num); letter-spacing: .04em; }
+.card h2 { font: 600 1.25rem/1.2 var(--display); margin: 0; text-wrap: balance; }
+.why { color: var(--muted); margin: 0; font-size: .95rem; }
+.btn { justify-self: start; margin-top: .35rem; display: inline-flex; align-items: center; gap: .4rem;
+  background: var(--accent); color: var(--accent-ink); text-decoration: none; font: 600 .95rem/1 var(--body);
+  padding: .75rem 1.05rem; border-radius: 999px; }
+.btn:hover { filter: brightness(1.06); }
+.btn:focus-visible { outline: 3px solid var(--num); outline-offset: 3px; }
+footer { margin-top: 2.5rem; padding-top: 1.25rem; border-top: 1px solid var(--line); color: var(--muted); font-size: .85rem; }
+@media (prefers-reduced-motion: no-preference) { .btn { transition: filter .15s ease; } }
+</style>
+</head><body><div class="wrap">
+  <header>
+    <span class="count">2 finds</span>
+    <h1>Nice Finds</h1>
+    <p class="lede">Every gadget from our Shorts and Reels, newest first. Saw "find #N" in a video? Here it is.</p>
+  </header>
+  <main class="grid">
+    <article class="card" id="find-2">
+      <img class="photo" src="images/002.jpg" alt="Halé Dome Hoops" loading="lazy" width="512" height="384">
+      <div class="body">
+        <span class="n">#2</span>
+        <h2>Halé Dome Hoops</h2>
+        <p class="why">Glossy one-inch dome hoops in 18k gold, rhodium or rose gold plating, made to be light enough for every day.</p>
+        <a class="btn" href="https://www.awin1.com/pclick.php?p=45053199403&amp;a=2783204&amp;m=90759" target="_blank" rel="sponsored nofollow noopener">Check it out <span aria-hidden="true">→</span></a>
+      </div>
+    </article>
+    <article class="card" id="find-1">
+      <img class="photo" src="images/001.jpg" alt="Typhur Sync Gold Dual" loading="lazy" width="512" height="384">
+      <div class="body">
+        <span class="n">#1</span>
+        <h2>Typhur Sync Gold Dual</h2>
+        <p class="why">Two wireless probes with six sensors each, so you know exactly when the meat is done.</p>
+        <a class="btn" href="https://link.amazon/B0i0SvVhP" target="_blank" rel="sponsored nofollow noopener">Check it out <span aria-hidden="true">→</span></a>
+      </div>
+    </article>
+  </main>
+  <footer>#ad · affiliate links · we may earn a commission.</footer>
+</div>
+</body></html>
