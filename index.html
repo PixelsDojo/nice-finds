@@ -1,74 +1,185 @@
 <!doctype html>
-<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>Nice Finds</title>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Nice Finds</title>
 <meta name="claude:viewport-fit-sides" content="cover">
-<meta name="description" content="Every Nice Finds gadget in one place. Tap a find to check it out.">
+<meta name="description" content="Every Nice Finds gadget in one place. Type the find number from the video, or search.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,800&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@600&display=swap">
 <style>
-/* Layout: one column of find cards on a phone, a 2-3 column grid on wider screens; numbers lead each card */
+/* Layout: sticky control bar (Find # + search + chips) over a responsive card grid; 24 cards per page */
 :root {
   --bg: #f3f4f1; --surface: #ffffff; --ink: #15181a; --muted: #5d6468; --line: #dfe2dc;
-  --accent: #0d6e5f; --accent-ink: #ffffff; --num: #0d6e5f;
+  --accent: #0d6e5f; --accent-ink: #ffffff; --num: #0d6e5f; --chip: #e8ebe5; --hl: #ffe9a8; --bar: rgba(243,244,241,.94);
   --display: "Bricolage Grotesque", "Helvetica Neue", Arial, sans-serif;
   --body: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
-  --mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --mono: "JetBrains Mono", ui-monospace, Menlo, monospace;
 }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) {
   --bg: #101314; --surface: #181c1e; --ink: #eef1ee; --muted: #a3aaa6; --line: #2a3032;
-  --accent: #3fbfa8; --accent-ink: #08201b; --num: #5fd3bd; color-scheme: dark } }
+  --accent: #3fbfa8; --accent-ink: #08201b; --num: #5fd3bd; --chip: #20262a; --hl: #4a3f12; --bar: rgba(16,19,20,.94); color-scheme: dark } }
 :root[data-theme="dark"] {
   --bg: #101314; --surface: #181c1e; --ink: #eef1ee; --muted: #a3aaa6; --line: #2a3032;
-  --accent: #3fbfa8; --accent-ink: #08201b; --num: #5fd3bd; color-scheme: dark }
+  --accent: #3fbfa8; --accent-ink: #08201b; --num: #5fd3bd; --chip: #20262a; --hl: #4a3f12; --bar: rgba(16,19,20,.94); color-scheme: dark }
 * { box-sizing: border-box; }
+html { scroll-padding-top: 230px; }
 body { background: var(--bg); color: var(--ink); font: 400 1rem/1.5 var(--body); margin: 0; }
-.wrap { max-width: 1080px; margin: 0 auto; padding-block: 2.5rem 3rem;
-  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
-header { display: grid; gap: .5rem; margin-bottom: 2rem; }
-h1 { font: 800 clamp(2.2rem, 7vw, 3.6rem)/1 var(--display); letter-spacing: -.02em; margin: 0; text-wrap: balance; }
-.lede { color: var(--muted); margin: 0; max-width: 34rem; }
-.count { font: 600 .78rem/1 var(--mono); letter-spacing: .08em; text-transform: uppercase; color: var(--num); }
-.grid { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); }
-.card { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; overflow: hidden;
-  display: grid; grid-template-rows: auto 1fr; min-width: 0; }
+.gut { max-width: 1080px; margin: 0 auto; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+header.top { padding-block: 1.6rem .4rem; }
+h1 { font: 800 clamp(2rem, 7vw, 3.2rem)/1 var(--display); letter-spacing: -.02em; margin: 0; }
+.lede { color: var(--muted); margin: .4rem 0 0; max-width: 36rem; }
+.bar { position: sticky; top: env(safe-area-inset-top, 0px); z-index: 5; background: var(--bar);
+  backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); border-bottom: 1px solid var(--line); }
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 10; background: var(--bg); }
+.bar .gut { display: grid; gap: .55rem; padding-block: .7rem; }
+.row { display: flex; gap: .5rem; min-width: 0; }
+.findno { display: flex; align-items: center; gap: .35rem; background: var(--surface); border: 2px solid var(--accent);
+  border-radius: 12px; padding: 0 .35rem 0 .75rem; flex: 0 0 auto; }
+.findno label { font: 600 1.15rem/1 var(--mono); color: var(--num); }
+.findno input { width: 4.2ch; font: 600 1.35rem/1 var(--mono); border: 0; background: transparent; color: var(--ink); padding: .55rem 0; }
+.findno input:focus { outline: none; }
+.findno:focus-within { box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 35%, transparent); }
+.go { background: var(--accent); color: var(--accent-ink); border: 0; border-radius: 8px; font: 600 .9rem/1 var(--body); padding: .55rem .7rem; cursor: pointer; }
+.search { flex: 1 1 auto; min-width: 0; font: 400 1rem/1 var(--body); color: var(--ink); background: var(--surface);
+  border: 1px solid var(--line); border-radius: 12px; padding: .7rem .85rem; }
+.search:focus-visible, .go:focus-visible, .chip:focus-visible, .btn:focus-visible, .more:focus-visible { outline: 3px solid var(--num); outline-offset: 2px; }
+.chips { display: flex; gap: .4rem; overflow-x: auto; scrollbar-width: none; padding-bottom: 2px; }
+.chips::-webkit-scrollbar { display: none; }
+.chip { flex: 0 0 auto; border: 1px solid var(--line); background: var(--chip); color: var(--ink); border-radius: 999px;
+  font: 500 .85rem/1 var(--body); padding: .5rem .8rem; cursor: pointer; }
+.chip[aria-pressed="true"] { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+.chip.gift { border-style: dashed; }
+.chip.gift[aria-pressed="true"] { border-style: solid; }
+.status { color: var(--muted); font-size: .85rem; min-height: 1.2em; margin: 0; }
+.status button { background: none; border: 0; color: var(--num); font: inherit; text-decoration: underline; cursor: pointer; padding: 0; }
+main { padding-block: 1rem 1rem; }
+.grid { display: grid; gap: 1rem; grid-template-columns: repeat(auto-fill, minmax(min(100%, 290px), 1fr)); }
+.card { background: var(--surface); border: 1px solid var(--line); border-radius: 14px; overflow: hidden; min-width: 0;
+  display: grid; grid-template-rows: auto 1fr; scroll-margin-top: 230px; }
+.card.flash { box-shadow: 0 0 0 4px var(--hl); }
 .photo { aspect-ratio: 4 / 3; width: 100%; max-width: 100%; object-fit: cover; display: block; background: var(--line); }
-.body { display: grid; gap: .55rem; padding: 1rem 1.1rem 1.15rem; align-content: start; }
-.n { font: 600 .85rem/1 var(--mono); color: var(--num); letter-spacing: .04em; }
-.card h2 { font: 600 1.25rem/1.2 var(--display); margin: 0; text-wrap: balance; }
+.body { display: grid; gap: .5rem; padding: .95rem 1.05rem 1.1rem; align-content: start; }
+.meta { display: flex; gap: .5rem; align-items: baseline; flex-wrap: wrap; }
+.n { font: 600 .9rem/1 var(--mono); color: var(--num); }
+.cat { font-size: .75rem; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.ex { font-size: .7rem; letter-spacing: .06em; text-transform: uppercase; color: var(--accent-ink); background: var(--muted); border-radius: 4px; padding: .1rem .35rem; }
+.card h2 { font: 600 1.2rem/1.2 var(--display); margin: 0; text-wrap: balance; }
+.brand { color: var(--muted); font-size: .85rem; margin: -.3rem 0 0; }
 .why { color: var(--muted); margin: 0; font-size: .95rem; }
-.btn { justify-self: start; margin-top: .35rem; display: inline-flex; align-items: center; gap: .4rem;
-  background: var(--accent); color: var(--accent-ink); text-decoration: none; font: 600 .95rem/1 var(--body);
-  padding: .75rem 1.05rem; border-radius: 999px; }
-.btn:hover { filter: brightness(1.06); }
-.btn:focus-visible { outline: 3px solid var(--num); outline-offset: 3px; }
-footer { margin-top: 2.5rem; padding-top: 1.25rem; border-top: 1px solid var(--line); color: var(--muted); font-size: .85rem; }
-@media (prefers-reduced-motion: no-preference) { .btn { transition: filter .15s ease; } }
-</style>
-</head><body><div class="wrap">
-  <header>
-    <span class="count">2 finds</span>
-    <h1>Nice Finds</h1>
-    <p class="lede">Every gadget from our Shorts and Reels, newest first. Saw "find #N" in a video? Here it is.</p>
-  </header>
-  <main class="grid">
-    <article class="card" id="find-2">
-      <img class="photo" src="images/002.jpg" alt="Halé Dome Hoops" loading="lazy" width="512" height="384">
-      <div class="body">
-        <span class="n">#2</span>
-        <h2>Halé Dome Hoops</h2>
-        <p class="why">Glossy one-inch dome hoops in 18k gold, rhodium or rose gold plating, made to be light enough for every day.</p>
-        <a class="btn" href="https://www.awin1.com/pclick.php?p=45053199403&amp;a=2783204&amp;m=90759" target="_blank" rel="sponsored nofollow noopener">Check it out <span aria-hidden="true">→</span></a>
-      </div>
-    </article>
-    <article class="card" id="find-1">
-      <img class="photo" src="images/001.jpg" alt="Typhur Sync Gold Dual" loading="lazy" width="512" height="384">
-      <div class="body">
-        <span class="n">#1</span>
-        <h2>Typhur Sync Gold Dual</h2>
-        <p class="why">Two wireless probes with six sensors each, so you know exactly when the meat is done.</p>
-        <a class="btn" href="https://link.amazon/B0i0SvVhP" target="_blank" rel="sponsored nofollow noopener">Check it out <span aria-hidden="true">→</span></a>
-      </div>
-    </article>
-  </main>
-  <footer>#ad · affiliate links · we may earn a commission.</footer>
-</div>
+.btn { justify-self: start; margin-top: .3rem; display: inline-flex; align-items: center; gap: .4rem; background: var(--accent);
+  color: var(--accent-ink); text-decoration: none; font: 600 .95rem/1 var(--body); padding: .75rem 1.05rem; border-radius: 999px; }
+.more { display: block; margin: 1.5rem auto 0; background: var(--surface); color: var(--ink); border: 1px solid var(--line);
+  border-radius: 999px; font: 600 .95rem/1 var(--body); padding: .8rem 1.3rem; cursor: pointer; }
+.empty { text-align: center; color: var(--muted); padding: 3rem 0; }
+footer { margin-top: 2rem; padding-block: 1.25rem 2rem; border-top: 1px solid var(--line); color: var(--muted); font-size: .85rem; }
+@media (prefers-reduced-motion: no-preference) { .card.flash { transition: box-shadow .4s ease; } }
+</style></head>
+<body>
+<header class="top gut">
+  <h1>Nice Finds</h1>
+  <p class="lede">Every gadget from our Shorts and Reels, newest first. Saw “find #N” in a video? Type the number.</p>
+</header>
+<div class="bar"><div class="gut">
+  <form class="row" id="jump" role="search" aria-label="Find by number or search">
+    <div class="findno"><label for="n">#</label><input id="n" inputmode="numeric" pattern="[0-9]*" placeholder="12" aria-label="Find number" autocomplete="off"><button class="go" type="submit">Go</button></div>
+    <input class="search" id="q" type="search" placeholder="Search finds" aria-label="Search by name, brand or why" autocomplete="off">
+  </form>
+  <div class="chips" id="cats" aria-label="Categories"></div>
+  <div class="chips" id="gifts" aria-label="Gift ideas"></div>
+  <p class="status" id="status" aria-live="polite"></p>
+</div></div>
+<main class="gut"><div class="grid" id="grid"></div><button class="more" id="more" type="button" hidden>Show more</button>
+  <p class="empty" id="empty" hidden>No finds match. <button type="button" id="clear2" class="chip">Clear filters</button></p></main>
+<footer class="gut">#ad · affiliate links · we may earn a commission.</footer>
+<script>
+(function () {
+  var PAGE = 24, CAT_ORDER = ["Tech", "Kitchen", "Outdoor", "Home", "Beauty", "Jewellery", "Gifts"];
+  var GIFTS = [["him", "For him"], ["her", "For her"], ["home", "For home"], ["under200", "Under $200"]];
+  var all = [], view = [], shown = PAGE, q = "", cats = new Set(), gifts = new Set();
+  var $ = function (id) { return document.getElementById(id); };
+  var norm = function (s) { return (s || "").normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase(); };
+  function chip(box, key, label, set, cls) {
+    var b = document.createElement("button");
+    b.type = "button"; b.className = "chip" + (cls ? " " + cls : ""); b.textContent = label;
+    b.setAttribute("aria-pressed", "false"); b.dataset.key = key;
+    b.addEventListener("click", function () {
+      set.has(key) ? set.delete(key) : set.add(key);
+      b.setAttribute("aria-pressed", set.has(key) ? "true" : "false"); shown = PAGE; apply();
+    });
+    box.appendChild(b);
+  }
+  function hasGiftsTag(f) { return (f.gifts || []).length > 0; }
+  function apply() {
+    var nq = norm(q);
+    view = all.filter(function (f) {
+      if (nq && f._hay.indexOf(nq) < 0) return false;
+      if (cats.size && !Array.from(cats).some(function (c) { return c === "Gifts" ? (f.category === "Gifts" || hasGiftsTag(f)) : f.category === c; })) return false;
+      if (gifts.size && !Array.from(gifts).some(function (g) { return (f.gifts || []).indexOf(g) >= 0; })) return false;
+      return true;
+    });
+    render();
+  }
+  function card(f) {
+    var a = document.createElement("article"); a.className = "card"; a.id = "find-" + f.n;
+    a.innerHTML = '<img class="photo" loading="lazy" decoding="async" width="512" height="384" alt="">' +
+      '<div class="body"><div class="meta"><span class="n"></span><span class="cat"></span></div><h2></h2><p class="brand"></p>' +
+      '<p class="why"></p><a class="btn" target="_blank" rel="sponsored nofollow noopener">Check it out <span aria-hidden="true">→</span></a></div>';
+    a.querySelector("img").src = f.image; a.querySelector("img").alt = f.name;
+    a.querySelector(".n").textContent = "#" + f.n;
+    a.querySelector(".cat").textContent = f.category || "";
+    if (f.example) { var e = document.createElement("span"); e.className = "ex"; e.textContent = "Example"; a.querySelector(".meta").appendChild(e); }
+    a.querySelector("h2").textContent = f.name;
+    a.querySelector(".brand").textContent = f.brand || "";
+    if (!f.brand) a.querySelector(".brand").hidden = true;
+    a.querySelector(".why").textContent = f.why;
+    a.querySelector(".btn").href = f.link;
+    return a;
+  }
+  function render() {
+    var g = $("grid"), frag = document.createDocumentFragment();
+    g.textContent = "";
+    view.slice(0, shown).forEach(function (f) { frag.appendChild(card(f)); });
+    g.appendChild(frag);
+    var left = view.length - Math.min(shown, view.length);
+    $("more").hidden = left <= 0; $("more").textContent = "Show more (" + left + ")";
+    $("empty").hidden = view.length > 0;
+    var filtered = q || cats.size || gifts.size;
+    $("status").innerHTML = "";
+    $("status").appendChild(document.createTextNode(filtered ? view.length + " of " + all.length + " finds " : all.length + " finds"));
+    if (filtered) { var c = document.createElement("button"); c.type = "button"; c.textContent = "Clear"; c.onclick = clearAll; $("status").appendChild(c); }
+  }
+  function clearAll() {
+    q = ""; $("q").value = ""; cats.clear(); gifts.clear(); shown = PAGE;
+    document.querySelectorAll(".chip[aria-pressed]").forEach(function (b) { b.setAttribute("aria-pressed", "false"); });
+    apply();
+  }
+  function jump(n) {
+    n = parseInt(n, 10);
+    if (!n) return;
+    var f = all.find(function (x) { return x.n === n; });
+    if (!f) { $("status").textContent = "No find #" + n + " yet."; return; }
+    if (view.indexOf(f) < 0) clearAll();
+    var i = view.indexOf(f); if (i >= shown) { shown = Math.ceil((i + 1) / PAGE) * PAGE; render(); }
+    var el = $("find-" + n);
+    if (el) { el.scrollIntoView({ block: "start" }); el.classList.add("flash"); setTimeout(function () { el.classList.remove("flash"); }, 1600); }
+    if (location.hash !== "#" + n) history.replaceState(null, "", "#" + n);
+  }
+  function fromHash() { var m = (location.hash || "").match(/^#(?:find-)?(\d+)$/); if (m) jump(m[1]); }
+  $("jump").addEventListener("submit", function (e) { e.preventDefault(); if ($("n").value) jump($("n").value); });
+  $("n").addEventListener("input", function () { this.value = this.value.replace(/\D/g, "").slice(0, 4); });
+  var t; $("q").addEventListener("input", function () { var v = this.value; clearTimeout(t); t = setTimeout(function () { q = v.trim(); shown = PAGE; apply(); }, 120); });
+  $("more").addEventListener("click", function () { shown += PAGE; render(); });
+  $("clear2").addEventListener("click", clearAll);
+  window.addEventListener("hashchange", fromHash);
+  fetch("finds.json", { cache: "no-cache" }).then(function (r) { return r.json(); }).then(function (d) {
+    all = (d.finds || []).slice().sort(function (a, b) { return b.n - a.n; });
+    all.forEach(function (f) { f._hay = norm([f.name, f.brand, f.why].join(" ")); });
+    var present = new Set(all.map(function (f) { return f.category; }).filter(Boolean));
+    var extra = Array.from(present).filter(function (c) { return CAT_ORDER.indexOf(c) < 0; }).sort();
+    CAT_ORDER.concat(extra).forEach(function (c) { chip($("cats"), c, c, cats); });
+    GIFTS.forEach(function (g) { chip($("gifts"), g[0], g[1], gifts, "gift"); });
+    apply(); fromHash();
+  }).catch(function () { $("status").textContent = "Couldn't load the finds. Pull down to refresh."; });
+})();
+</script>
 </body></html>
