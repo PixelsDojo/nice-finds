@@ -8,7 +8,14 @@
       "why": "Two wireless probes with six sensors each, so you know exactly when the meat is done.",
       "link": "https://link.amazon/B0i0SvVhP",
       "image": "images/001.jpg",
-      "added": "2026-11-24"
+      "added": "2026-11-24",
+      "category": "Kitchen",
+      "gifts": [
+        "him",
+        "home",
+        "under200"
+      ],
+      "brand": "Typhur"
     },
     {
       "n": 2,
@@ -17,7 +24,12 @@
       "why": "Glossy one-inch dome hoops in 18k gold, rhodium or rose gold plating, made to be light enough for every day.",
       "link": "https://www.awin1.com/pclick.php?p=45053199403&a=2783204&m=90759",
       "image": "images/002.jpg",
-      "added": "2026-11-24"
+      "added": "2026-11-24",
+      "category": "Jewellery",
+      "gifts": [
+        "her"
+      ],
+      "brand": "Halé"
     }
   ]
 }
