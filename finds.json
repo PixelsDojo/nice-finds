@@ -1,0 +1,23 @@
+{
+  "_note": "Nice Finds page data (Lizzy, 24 Nov). Newest first on the page. #N is the find number used on Shorts/Reels ('Link in bio · find #N'). Steven appends a card when a Find posts (YouTube or Instagram).",
+  "finds": [
+    {
+      "n": 1,
+      "slug": "typhur-sync-dual-pro",
+      "name": "Typhur Sync Gold Dual",
+      "why": "Two wireless probes with six sensors each, so you know exactly when the meat is done.",
+      "link": "https://link.amazon/B0i0SvVhP",
+      "image": "images/001.jpg",
+      "added": "2026-11-24"
+    },
+    {
+      "n": 2,
+      "slug": "hale-dome-hoops",
+      "name": "Halé Dome Hoops",
+      "why": "Glossy one-inch dome hoops in 18k gold, rhodium or rose gold plating, made to be light enough for every day.",
+      "link": "https://www.awin1.com/pclick.php?p=45053199403&a=2783204&m=90759",
+      "image": "images/002.jpg",
+      "added": "2026-11-24"
+    }
+  ]
+}
