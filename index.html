@@ -94,7 +94,8 @@ footer { margin-top: 2rem; padding-block: 1.25rem 2rem; border-top: 1px solid va
 <script>
 (function () {
   var PAGE = 24, CAT_ORDER = ["Tech", "Kitchen", "Outdoor", "Home", "Beauty", "Jewellery", "Gifts"];
-  var GIFTS = [["him", "For him"], ["her", "For her"], ["home", "For home"], ["under200", "Under $200"]];
+  var GIFTS = [["him", "For him"], ["her", "For her"], ["home", "Home"], ["foodie", "Foodie"], ["outdoors", "Outdoors"],
+               ["tech", "Tech lover"], ["under150", "Under $150"], ["under200", "Under $200"]];
   var all = [], view = [], shown = PAGE, q = "", cats = new Set(), gifts = new Set();
   var $ = function (id) { return document.getElementById(id); };
   var norm = function (s) { return (s || "").normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase(); };
