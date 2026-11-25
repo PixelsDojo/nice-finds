@@ -30,6 +30,22 @@
         "her"
       ],
       "brand": "Halé"
+    },
+    {
+      "n": 3,
+      "slug": "theragun-mini",
+      "name": "Theragun Mini (3rd Gen)",
+      "brand": "Therabody",
+      "why": "A palm-sized massage gun with three speeds and three heads, small enough for a gym bag or a carry-on.",
+      "link": "https://www.amazon.com/dp/B0DV7JN7ZD?tag=lizzyland0f-20",
+      "image": "images/003.jpg",
+      "added": "2026-11-25",
+      "category": "Tech",
+      "gifts": [
+        "him",
+        "her",
+        "under200"
+      ]
     }
   ]
 }
